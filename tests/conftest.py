@@ -72,13 +72,25 @@ def event_loop():
 def init_beanie_for_tests():
     """Session fixture to initialize Beanie ODM on the MockClient."""
     from services.base_service.main import ServiceMetadata
+    from services.governance_service.models.policy import Policy
+    from services.governance_service.models.exception import PolicyException
+    from services.governance_service.models.report import GovernanceReport
     from shared.database import db_manager
-    
+
     # Run initialize with patched AsyncIOMotorClient
     with patch("shared.database.AsyncIOMotorClient", MockClient):
         loop = asyncio.new_event_loop()
         try:
-            loop.run_until_complete(db_manager.initialize(document_models=[ServiceMetadata]))
+            loop.run_until_complete(
+                db_manager.initialize(
+                    document_models=[
+                        ServiceMetadata,
+                        Policy,
+                        PolicyException,
+                        GovernanceReport,
+                    ]
+                )
+            )
         finally:
             loop.close()
     yield
