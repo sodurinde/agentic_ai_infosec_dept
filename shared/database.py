@@ -1,6 +1,12 @@
 import logging
 from typing import List, Type, Any
 from motor.motor_asyncio import AsyncIOMotorClient
+
+# Hotfix: Beanie 2.1.0 calls client.append_metadata which was removed in newer Motor versions.
+# We inject a dummy lambda to prevent AttributeError and TypeError.
+if not hasattr(AsyncIOMotorClient, "append_metadata"):
+    AsyncIOMotorClient.append_metadata = lambda self, *args, **kwargs: None
+
 from beanie import init_beanie, Document
 from shared.config import settings
 
