@@ -75,6 +75,13 @@ def init_beanie_for_tests():
     from services.governance_service.models.policy import Policy
     from services.governance_service.models.exception import PolicyException
     from services.governance_service.models.report import GovernanceReport
+    from services.risk_mgmt_service.models.methodology import (
+        Methodology,
+    )
+    from services.risk_mgmt_service.models.risk import Risk
+    from services.risk_mgmt_service.models.treatment import (
+        TreatmentPlan,
+    )
     from shared.database import db_manager
 
     # Run initialize with patched AsyncIOMotorClient
@@ -88,6 +95,9 @@ def init_beanie_for_tests():
                         Policy,
                         PolicyException,
                         GovernanceReport,
+                        Methodology,
+                        Risk,
+                        TreatmentPlan,
                     ]
                 )
             )
